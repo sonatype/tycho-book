@@ -1,0 +1,47 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1038\cocoasubrtf350
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww9000\viewh8400\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\ql\qnatural\pardirnatural
+
+\f0\fs24 \cf0 Tycho book\
+\
+What is tycho?\
+Tycho is a set of maven plugins dedicated to build OSGi bundles, p2 repositories as well as other eclipse constructs like features, and RCP applications (aka products). \
+Because, Tycho is part of the Maven ecosystem, users can leverage the many plugins from the Maven ecosystem such as code generators, quality analysis tools, code coverage, etc.\
+\
+How old is tycho?\
+Tycho started a couple of years ago from the need to have the ability to build eclipse plugins using Maven. The initial code started from XYZ and got quickly picked up by Sonatype. Nowadays, th emain contributors are SAP, Sonatype and Intallio.\
+\
+Where is tycho?\
+Tycho is a Open source project run by Sonatype. Recently, it has been given to the Eclipse Foundation and will be moved there, where it is being promoted as the build technology of choice to help with the long term support strategy the Eclipse Foundation is putting together.\
+Currently the tycho codebase can be found at: TO FILL\
+The users and development mailing lists are available at: TO FILL\
+\
+Tycho and other technologies\
+Eclipse PDE UI / PDE Build\
+PDE, the support for plug-in and OSGi development in Eclipse is composed of two parts. \
+1) A "UI" part, referred to as PDE UI, that provides the classpath management infrastructure in the IDE, the launching capabilities (e.g. Run as OSGi), as well as editors for OSGi manifest, features, product files, target platforms, etc.\
+2) A "headless " part, referred to as PDE Build, that since the inception of Eclipse, provides ant scripts and ant script generators to build plugins, features and RCP applications outside of the IDE.\
+Tycho being a headless build mechanism, it "competes" with PDE build in the sense that it provides an alternative way to build plugins and other eclipse artifacts. That said, Tycho reuses some of the files that are being used by PDE Build such as build.properties, manifest.mf which allows to reuse PDE UI infrastructure.\
+\
+Maven bundle plugin & Bnd\
+TO FILL\
+\
+p2\
+p2 is the codename of Eclipse and OSGi update mechanism.\
+Tycho relates to p2 in three ways. \
+* Tycho can produce p2 repositories as part of a build.\
+* Tycho downloads the dependencies of the entities being built from p2 repositories. By default, Tycho does not resolve its dependencies from Maven repository because the maven dependency and repository model does not accommodate the OSGi constructs used to express dependencies such as import package.\
+* Finally, Tycho embeds parts of the p2 in order to perform the dependency resolution and a few other key operations.\
+\
+Tycho (Maven) / Hudson / Nexus\
+In a bigger picture, Tycho (Maven) is a build engine in the sense that it is the entity that actually compiles code, runs tests, etc. It can run anywhere, on your local machine or on your Continuous Integration server (CI) such as Hudson.\
+Hudson plays the role of a "scheduler" in that it triggers the execution of the tycho build to based on some triggers (manual, scheduled, SCM change, etc).\
+Typically, when run on a CI server, the artifacts being built (jars, zip, sources, etc)are made available on a repository manager such as Nexus. Beyond just storing those artifacts, a repository manager makes available the artifacts for other builds to consume.\
+So to recap, my tycho build is running on hudson server, and it gets and publishes artifacts from my Nexus server.\
+\
+\
+Who is using Tycho?\
+Tycho is used in production by SAP, Sonatype, Intallio, and many other companies as well as open source projects (e.g. on Eclipse) of all size and complexity.\
+}
