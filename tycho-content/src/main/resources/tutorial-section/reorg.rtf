@@ -1,0 +1,113 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1038\cocoasubrtf350
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww9000\viewh8400\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\ql\qnatural\pardirnatural
+
+\f0\fs24 \cf0 Toward a recommended project structure\
+\
+In this section we are evolving the simplistic example provided in the previous section toward a recommended structure.\
+\
+Introducing the parent pom.\
+Looking at the XML from the previous section, it appears obvious that if we had a second plugin to build, the solution would not scale very well since a lot of XML would have to be duplicated. This duplication problem get solved using the concept of parent POM that exists in Maven. Through inheritance maven projects can inherit from values defined in parents, thus allowing several projects to share the same configuration and alleviating the need for duplication.\
+\
+The following xml snippet is the complete parent that is derived from the previous example\
+\
+<?xml version="1.0" encoding="UTF-8"?>\
+<project\
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"\
+  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">\
+  <modelVersion>4.0.0</modelVersion>\
+  <groupId>tychodemo</groupId>\
+  <artifactId>parent</artifactId>\
+  <version>0.0.1-SNAPSHOT</version>\
+  <packaging>pom</packaging>\
+\
+  <properties>\
+    <tycho-version>0.11.0-SNAPSHOT</tycho-version>\
+  </properties>\
+  <repositories>\
+    <!-- configure p2 repository to resolve against -->\
+    <repository>\
+      <id>helios</id>\
+      <layout>p2</layout>\
+      <url>http://download.eclipse.org/releases/helios</url>\
+            <!-- file URL for faster and offline builds -->\
+      <!-- <url>file:/$\{basedir\}/../../helios</url> -->\
+    </repository>\
+  </repositories>\
+  <build>\
+    <plugins>\
+      <plugin>\
+        <!-- enable tycho build extension -->\
+        <groupId>org.sonatype.tycho</groupId>\
+        <artifactId>tycho-maven-plugin</artifactId>\
+        <version>$\{tycho-version\}</version>\
+        <extensions>true</extensions>\
+      </plugin>\
+      <plugin>\
+        <groupId>org.sonatype.tycho</groupId>\
+        <artifactId>target-platform-configuration</artifactId>\
+        <version>$\{tycho-version\}</version>\
+        <configuration>\
+          <!-- recommended: use p2-based target platform resolver -->\
+          <resolver>p2</resolver>\
+        </configuration>\
+      </plugin>\
+    </plugins>\
+  </build>\
+</project>\
+\
+A few things to notice. The packaging type of a parent is pom, and each children will specify its own packaging type.\
+\
+The child becomes what is shown in the figure below. As we can see it is much more compact than what was shown in the previous figure and only contains the information that are really relevant to this project: packaging type, group, artifact and version. You will also note the addition of the parent section that refers to the coordinate of the parent both in terms of maven coordinate and file path.\
+\
+<project\
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"\
+  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">\
+  <modelVersion>4.0.0</modelVersion>\
+  <parent>\
+    <artifactId>parent</artifactId>\
+    <groupId>tychodemo</groupId>\
+    <version>0.0.1-SNAPSHOT</version>\
+    <relativePath>../tychodemo.parent/pom.xml</relativePath>\
+  </parent>\
+  <groupId>tychodemo</groupId>\
+  <artifactId>tychodemo.bundle</artifactId>\
+  <version>1.0.0-SNAPSHOT</version>\
+  <packaging>eclipse-plugin</packaging>\
+</project>\
+\
+\
+Introducing the aggregator.\
+When several modules need to be built together, they are typically aggregated into a module that is usually referred to as an "aggregator". Whereas parent plays the role of inheritance, the aggregator plays a role of composition regrouping under the same module pieces that should be built together.\
+\
+The following figure shows the complete aggregator. The modules section list the actual modules that will be built. It is important to note that each entry refers to the folder on disk relative to the position of the aggregator pom and not the artifactId.\
+\
+Another point worth noting is that modules are not built in the order they are listed. Instead projects are built following the topological sort of the dependencies of the projects being built.\
+\
+<project\
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"\
+  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">\
+  <modelVersion>4.0.0</modelVersion>\
+  <groupId>tychodemo</groupId>\
+  <artifactId>aggregator</artifactId>\
+  <version>0.0.1-SNAPSHOT</version>\
+  <packaging>pom</packaging>\
+\
+  <modules>\
+    <module>tychodemo.bundle</module>\
+    <module>tychodemo.parent</module>\
+  </modules>\
+\
+</project>\
+\
+So to summarize we now have two folders for a total of 3 pom files organized as follow:\
+./tychodemo-parent/\
+	pom.xml\
+./tychodemo.bundle/\
+	pom.xml\
+./pom.xml\
+\
+\
+}

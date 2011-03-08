@@ -1,0 +1,47 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1038\cocoasubrtf350
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww9000\viewh8400\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\ql\qnatural\pardirnatural
+
+\f0\fs24 \cf0 Building features \
+In this section we are showing how to build features.\
+Building a feature with tycho is very simple and requires minimal markup. The following figure shows the complete pom.xml.\
+\
+The few relevant entries in here are:\
+	  <packaging>eclipse-feature</packaging> that indicates that this project is a feature, and the artifactId and the version that should match the feature id and version found in the feature.xml.\
+\
+Like for plugins, the content of the feature.jar archive gets controlled by the value of the bin.include property of the build.properties file.\
+\
+<?xml version="1.0" encoding="UTF-8"?>\
+<project\
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"\
+  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">\
+  <modelVersion>4.0.0</modelVersion>\
+  <parent>\
+    <artifactId>parent</artifactId>\
+    <groupId>tychodemo</groupId>\
+    <version>0.0.1-SNAPSHOT</version>\
+    <relativePath>../tychodemo.parent/pom.xml</relativePath>\
+  </parent>\
+  <groupId>tychodemo</groupId>\
+  <artifactId>tychodemo.feature</artifactId>\
+  <version>1.0.0-SNAPSHOT</version>\
+  <packaging>eclipse-feature</packaging>\
+</project>\
+\
+\
+What is the difference between the aggregator and the feature?\
+The feature is an install time mechanism created by eclipse to install a set of features and plugins together, whereas the aggregator is a build time concept created by Maven to aggregate a set of things that need to be built together.\
+For example in an aggregator it is frequent to find a bundle, a corresponding bundle for tests and the feature, but the feature.xml itself will most likely only refer to the bundle.\
+\
+p2 groups and features\
+TO FILL\
+\
+\
+\
+Building update sites - aka p2 repositories\
+Building a simple site\
+Categorizing content of a site\
+Controlling the content of a repository (just my stuff vs the complete dependency tree)\
+}
