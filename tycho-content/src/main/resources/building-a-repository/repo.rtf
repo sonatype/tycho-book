@@ -4,14 +4,9 @@
 \margl1440\margr1440\vieww9000\viewh8400\viewkind0
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\ql\qnatural\pardirnatural
 
-\f0\fs24 \cf0 Building features \
-In this section we are showing how to build features.\
-Building a feature with tycho is very simple and requires minimal markup. The following figure shows the complete pom.xml.\
+\f0\fs24 \cf0 Building update sites (p2 repository)\
 \
-The few relevant entries in here are:\
-	  <packaging>eclipse-feature</packaging> that indicates that this project is a feature, and the artifactId and the version that should match the feature id and version found in the feature.xml.\
-\
-Like for plugins, the content of the feature.jar archive gets controlled by the value of the bin.include property of the build.properties file.\
+The creation of update site (aka p2 repository) is handled by the eclipse-repository packaging type and a very minimalist pom and set of files.\
 \
 <?xml version="1.0" encoding="UTF-8"?>\
 <project\
@@ -25,31 +20,35 @@ Like for plugins, the content of the feature.jar archive gets controlled by the 
     <relativePath>../tychodemo.parent/pom.xml</relativePath>\
   </parent>\
   <groupId>tychodemo</groupId>\
-  <artifactId>tychodemo.feature</artifactId>\
+  <artifactId>tychodemo.repository</artifactId>\
   <version>1.0.0-SNAPSHOT</version>\
-  <packaging>eclipse-feature</packaging>\
+  <packaging>eclipse-repository</packaging>\
+\
 </project>\
 \
-\
-What is the difference between the aggregator and the feature?\
-The feature is an install time mechanism created by eclipse to install a set of features and plugins together, whereas the aggregator is a build time concept created by Maven to aggregate a set of things that need to be built together.\
-For example in an aggregator it is frequent to find a bundle, a corresponding bundle for tests and the feature, but the feature.xml itself will most likely only refer to the bundle.\
-\
-p2 groups and features\
-TO FILL\
-\
-\
-Building update sites (p2 repository)\
-The creation of update site (aka p2 repository) is handled by the eclipse-repository packaging type and again a very minimalist pom.\
-\
-<TO FILL POM>\
-\
-The features that need to be made available in the final repository are listed in a file called category.xml located in the same folder than pom.xml\
-The category.xml files serves two purposes:\
+The features that need to be made available in the final repository are listed in a file called category.xml located in the same folder than pom.xml. The category.xml files serves two purposes:\
 - To list the features that need to be contained into the site\
 - To categorize the content of the repository for easier presentation to the user\
 \
-For example the following category file will publish the XYZ feature and will make it available under a category called "YYY" (see screenshot TO FILL).\
+For example the following category file will publish the tychodemo.feature feature and will make it available under a category called "Tycho Demo Category" .\
+\
+<?xml version="1.0" encoding="UTF-8"?>\
+<site>\
+   <feature url="features/tychodemo.feature_1.0.0.qualifier.jar" id="tychodemo.feature" version="1.0.0.qualifier">\
+      <category name="tychodemo.category"/>\
+   </feature>\
+   <feature url="features/org.eclipse.rcp_0.0.0.jar" id="org.eclipse.rcp" version="0.0.0">\
+      <category name="tychodemo.category"/>\
+   </feature>\
+   <feature url="features/tychodemo.source.feature_1.0.0.qualifier.jar" id="tychodemo.source.feature" version="1.0.0.qualifier">\
+      <category name="tychodemo.category"/>\
+   </feature>\
+   <category-def name="tychodemo.category" label="Tycho Demo Category">\
+      <description>\
+         Tycho Demo Category\
+      </description>\
+   </category-def>\
+</site>\
 \
 \
 Self-contained repositoroies\

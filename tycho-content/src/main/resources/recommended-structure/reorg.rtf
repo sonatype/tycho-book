@@ -1,6 +1,6 @@
 {\rtf1\ansi\ansicpg1252\cocoartf1038\cocoasubrtf350
-{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;}
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 LucidaGrande;}
+{\colortbl;\red255\green255\blue255;\red26\green0\blue244;}
 \margl1440\margr1440\vieww9000\viewh8400\viewkind0
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\ql\qnatural\pardirnatural
 
@@ -9,9 +9,12 @@
 In this section we are evolving the simplistic example provided in the previous section toward a recommended structure.\
 \
 Introducing the parent pom.\
-Looking at the XML from the previous section, it appears obvious that if we had a second plugin to build, the solution would not scale very well since a lot of XML would have to be duplicated. This duplication problem get solved using the concept of parent POM that exists in Maven. Through inheritance maven projects can inherit from values defined in parents, thus allowing several projects to share the same configuration and alleviating the need for duplication.\
+Looking at the XML from the previous section, it appears obvious that if we had a second plugin to build, the solution would not scale very well since a lot of XML would have to be duplicated. This duplication problem gets solved using the concept of parent POM ({\field{\*\fldinst{HYPERLINK "http://sonatype.com/books/maven-book/reference/pom-relationships-sect-project-inheritance.html"}}{\fldrslt 
+\f1\fs22 \cf2 \cb0 \ul \ulc2 http://sonatype.com/books/maven-book/reference/pom-relationships-sect-project-inheritance.html}}
+\f1\fs22 \cf2 \cb0 \ul \ulc2 )
+\f0\fs24 \cf0 \cb1 \ulnone  that exists in Maven. Through inheritance maven projects can inherit from values defined in parents, thus allowing several projects to share the same configuration and alleviating the need for duplication.\
 \
-The following xml snippet is the complete parent that is derived from the previous example\
+The following xml snippet is the complete parent that is derived from the previous example. As you can observer, the build section and the repository sections are now moved there since they are common to the projects being built.\
 \
 <?xml version="1.0" encoding="UTF-8"?>\
 <project\
@@ -58,7 +61,11 @@ The following xml snippet is the complete parent that is derived from the previo
   </build>\
 </project>\
 \
-A few things to notice. The packaging type of a parent is pom, and each children will specify its own packaging type.\
+A few things to notice:\
+The packaging type of a parent is pom, and each children will specify its own packaging type. \
+The version of tycho is factored out in a variable. It is usually a good practice because it makes it easy to consume a new version of tycho without having to update several places. (
+\f1\fs22 \cf2 \cb0 \ul \ulc2 http://maven.apache.org/guides/introduction/introduction-to-the-pom.html#Project_Interpolation) 
+\f0\fs24 \cf0 \cb1 \ulnone \
 \
 The child becomes what is shown in the figure below. As we can see it is much more compact than what was shown in the previous figure and only contains the information that are really relevant to this project: packaging type, group, artifact and version. You will also note the addition of the parent section that refers to the coordinate of the parent both in terms of maven coordinate and file path.\
 \

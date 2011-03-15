@@ -6,14 +6,15 @@
 
 \f0\fs24 \cf0 Building RCP applications / product builds\
 \
-In order to build an RCP application, tycho uses the product file used by PDE.  The build of product is done using the <eclipse-repository> packaging type. However in comparison to what we have seen so far, it requires a little bit more configuration since a product can be made available as a p2 repository or an archive.\
-Also another noticeable difference with the typical pattern from PDE is that the product file needs to be in a project of its own rather than being in the product that defines the application.\
+In order to build an RCP application, Tycho uses the product file used by PDE.  The build of product is done using the <eclipse-repository> packaging type. However in comparison to what we have seen so far, building a product requires a little bit more configuration since a product can be made available as a p2 repository or an archive.\
+Also another noticeable difference with the typical pattern recommended by PDE is that the product file needs to be in a project of its own rather than being in the product that defines the application.\
 \
-\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\ql\qnatural\pardirnatural
-\cf0 This will generate a complete p2-enabled RCP application. \
+This gives the following file structure:\
 \
-\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\ql\qnatural\pardirnatural
-\cf0 The following pom.xml shows the creation of a product archive for a variety of platforms specified in the parent pom.\
+\
+This will generate a complete p2-enabled RCP application. \
+\
+The following pom.xml shows the creation of a product archive for a variety of platforms specified in the parent pom.\
 \
 <?xml version="1.0" encoding="UTF-8"?>\
 <project\
@@ -65,8 +66,7 @@ The specification of the environment to build for is typically done in the paren
 \
 Add this segment in the  execution section of the org.sonatype.tycho:tycho-p2-director-plugin\
 \
-\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\ql\qnatural\pardirnatural
-\cf0       <!-- (optional) customize the root folder name of the product zip -->\
+      <!-- (optional) customize the root folder name of the product zip -->\
         <configuration>\
           <products>\
             <product>\
@@ -75,12 +75,6 @@ Add this segment in the  execution section of the org.sonatype.tycho:tycho-p2-di
             </product>\
           </products>\
         </configuration>\
-\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\ql\qnatural\pardirnatural
-\cf0 \
 \
-Typically tycho will reuse the file formats that exists in order to create the builds\
-- When there is file that is \
-\
-convention over configuration\
 \
 }
