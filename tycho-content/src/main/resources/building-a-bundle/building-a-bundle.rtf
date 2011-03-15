@@ -1,0 +1,155 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1038\cocoasubrtf350
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 Monaco;}
+{\colortbl;\red255\green255\blue255;\red0\green128\blue128;\red63\green127\blue127;\red127\green0\blue127;
+\red42\green0\blue255;\red63\green95\blue191;}
+\margl1440\margr1440\vieww11480\viewh13340\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\ql\qnatural\pardirnatural
+
+\f0\fs24 \cf0 Building an OSGi bundle / plugin\
+In this section we are reviewing the simplest, though not most concise, way of building an OSGi bundle. The example shown in this section is not meant to be used as a starting point but solely in the context of an introduction to group together all the relevant bits of configuration in one place. \
+\
+As shown in picture (TO FILL ref to files.png), beside the source code, the example contains three relevant files.\
+The OSGi Manifest.mf which captures the dependencies of the bundle being built.\
+The build.properties which describes the set of files that will be included in the final archive (bin.includes property)\
+The pom.xml which indicates Maven how to build this project.\
+\
+Given that Manifest.mf and build.properties are known from PDE users, this section will mostly explain the pom.xml shown in figure (TO FILL pom.xml).\
+\
+\
+\pard\pardeftab720\ql\qnatural
+
+\f1\fs22 \cf2 <\cf3 project\cf0  \cf4 xmlns\cf0 =\cf5 "http://maven.apache.org/POM/4.0.0"\cf0  \cf4 xmlns:xsi\cf0 =\cf5 "http://www.w3.org/2001/XMLSchema-instance"\cf0 \
+	\cf4 xsi:schemaLocation\cf0 =\cf5 "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"\cf2 >\cf0 \
+	\cf2 <\cf3 modelVersion\cf2 >\cf0 4.0.0\cf2 </\cf3 modelVersion\cf2 >\cf0 \
+	\
+	\cf2 <\cf3 groupId\cf2 >\cf0 tycho.tutorial\cf2 </\cf3 groupId\cf2 >\cf0 \
+	\cf2 <\cf3 artifactId\cf2 >\cf0 example1\cf2 </\cf3 artifactId\cf2 >\cf0 \
+	\cf2 <\cf3 version\cf2 >\cf0 1.0.0-SNAPSHOT\cf2 </\cf3 version\cf2 >\cf0 \
+	\cf2 <\cf3 packaging\cf2 >\cf0 eclipse-\ul plugin\cf2 \ulnone </\cf3 packaging\cf2 >\cf0 \
+\
+	\cf2 <\cf3 properties\cf2 >\cf0 \
+		\cf2 <\cf3 tycho-version\cf2 >\cf0 0.11.0\cf2 </\cf3 tycho-version\cf2 >\cf0 \
+	\cf2 </\cf3 properties\cf2 >\cf0 \
+\
+	\cf2 <\cf3 repositories\cf2 >\cf0 \
+		\cf6 <!-- configure p2 repository to resolve against -->\cf0 \
+		\cf2 <\cf3 repository\cf2 >\cf0 \
+			\cf2 <\cf3 id\cf2 >\cf0 \ul \ulc0 helios\cf2 \ulnone </\cf3 id\cf2 >\cf0 \
+			\cf2 <\cf3 layout\cf2 >\cf0 p2\cf2 </\cf3 layout\cf2 >\cf0 \
+			\cf2 <\cf3 url\cf2 >\cf0 http://download.eclipse.org/releases/helios\cf2 </\cf3 url\cf2 >\cf0 \
+		\cf2 </\cf3 repository\cf2 >\cf0 \
+	\cf2 </\cf3 repositories\cf2 >\cf0 \
+\
+	\cf2 <\cf3 build\cf2 >\cf0 \
+		\cf2 <\cf3 plugins\cf2 >\cf0 \
+			\cf2 <\cf3 plugin\cf2 >\cf0 \
+				\cf6 <!-- enable \ul tycho\ulnone  build extension -->\cf0 \
+				\cf2 <\cf3 groupId\cf2 >\cf0 org.sonatype.tycho\cf2 </\cf3 groupId\cf2 >\cf0 \
+				\cf2 <\cf3 artifactId\cf2 >\cf0 \ul tycho\ulnone -\ul maven\ulnone -\ul plugin\cf2 \ulnone </\cf3 artifactId\cf2 >\cf0 \
+				\cf2 <\cf3 version\cf2 >\cf0 $\{\ul tycho\ulnone -version\}\cf2 </\cf3 version\cf2 >\cf0 \
+				\cf2 <\cf3 extensions\cf2 >\cf0 true\cf2 </\cf3 extensions\cf2 >\cf0 \
+			\cf2 </\cf3 plugin\cf2 >\cf0 \
+			\cf2 <\cf3 plugin\cf2 >\cf0 \
+				\cf2 <\cf3 groupId\cf2 >\cf0 org.sonatype.tycho\cf2 </\cf3 groupId\cf2 >\cf0 \
+				\cf2 <\cf3 artifactId\cf2 >\cf0 target-platform-configuration\cf2 </\cf3 artifactId\cf2 >\cf0 \
+				\cf2 <\cf3 version\cf2 >\cf0 $\{\ul tycho\ulnone -version\}\cf2 </\cf3 version\cf2 >\cf0 \
+				\cf2 <\cf3 configuration\cf2 >\cf0 \
+					\cf6 <!-- recommended: use p2-based target platform resolver -->\cf0 \
+					\cf2 <\cf3 resolver\cf2 >\cf0 p2\cf2 </\cf3 resolver\cf2 >\cf0 \
+				\cf2 </\cf3 configuration\cf2 >\cf0 \
+			\cf2 </\cf3 plugin\cf2 >\cf0 \
+		\cf2 </\cf3 plugins\cf2 >\cf0 \
+	\cf2 </\cf3 build\cf2 >\cf0 \
+\
+\cf2 </\cf3 project\cf2 >\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\ql\qnatural\pardirnatural
+
+\f0\fs24 \cf0 \
+1) Identifying what is being built\
+\pard\pardeftab720\ql\qnatural
+
+\f1\fs22 \cf0 	\cf2 <\cf3 groupId\cf2 >\cf0 tycho.tutorial\cf2 </\cf3 groupId\cf2 >\cf0 \
+	\cf2 <\cf3 artifactId\cf2 >\cf0 example1\cf2 </\cf3 artifactId\cf2 >\cf0 \
+	\cf2 <\cf3 version\cf2 >\cf0 1.0.0-SNAPSHOT\cf2 </\cf3 version\cf2 >\
+\pard\pardeftab720\ql\qnatural
+
+\f0\fs24 \cf0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardeftab720\ql\qnatural\pardirnatural
+
+\b \cf0 groupId 
+\b0 is a necessity to "make the Maven gods happy" :) In a pure Maven build, the groupId is used to organize the artifacts in a namespace. However, in tycho its importance is reduced since usually the Bundle-SymbolicName is a fully qualified name (e.g. org.eclipse.platform) that is not ambiguous.\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardeftab720\ql\qnatural\pardirnatural
+
+\b \cf0 artifactId
+\b0  is the name given to what is being built. It needs to be a copy of the Bundle-SymbolicName attribute as found in manifest.mf.\
+
+\b version
+\b0  is the version of the artifact being built. It must match the Bundle-Version attribute as found in the manifest.mf. A slight twist here comes from the fact that versions used in manifest end with .qualifier and that the one specified in the pom.xml end with  -SNAPSHOT. For example 1.0.0.qualifier becomes 1.0.0-SNAPSHOT.  \
+\
+The duplication of information between the Manifest.mf and the pom.xml is unfortunate but is one that we have to live with for the time being. This repetition can be the cause of build failures when the values are not in sync, and it would lead to the following message:\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\ql\qnatural\pardirnatural
+\cf0 [ERROR] Failed to execute goal org.sonatype.tycho:maven-osgi-packaging-plugin:0.11.0:validate-version (default-validate-version) on project example1: Unqualified OSGi version 1.0.0.qualifier must match unqualified Maven version 0.0.1-SNAPSHOT for SNAPSHOT builds -> [Help 1]\
+\
+\
+2) The kind of entity being built\
+\pard\pardeftab720\ql\qnatural
+
+\f1\fs22 \cf2 	<\cf3 packaging\cf2 >\cf0 eclipse-\ul plugin\cf2 \ulnone </\cf3 packaging	
+\f0\fs24 \cf0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\ql\qnatural\pardirnatural
+\cf0 This part of the markup tells Maven that what is being built is an eclipse plugin. This packaging type is not specific to eclipse and should be used to build OSGi bundles.\
+Tycho defines additional packaging types that will be presented in the following chapters.\
+\
+3) Repositories\
+In order to satisfy the dependencies expressed in the manifest.mf and thus successfully build the bundle, Tycho needs to access p2 repositories. The identification of these repositories is done using the repository markup as defined by Maven. For example, the following markup will cause the Eclipse Helios repository to be used to revolve dependencies. Note that it is important to set the layout to be p2, since it is what indicates Maven that this is not a regular maven repository.\
+\
+\pard\pardeftab720\ql\qnatural
+
+\f1\fs22 \cf0 	\cf2 <\cf3 repositories\cf2 >\cf0 \
+		\cf6 <!-- configure p2 repository to resolve against -->\cf0 \
+		\cf2 <\cf3 repository\cf2 >\cf0 \
+			\cf2 <\cf3 id\cf2 >\cf0 \ul helios\cf2 \ulnone </\cf3 id\cf2 >\cf0 \
+			\cf2 <\cf3 layout\cf2 >\cf0 p2\cf2 </\cf3 layout\cf2 >\cf0 \
+			\cf2 <\cf3 url\cf2 >\cf0 http://download.eclipse.org/releases/helios\cf2 </\cf3 url\cf2 >\cf0 \
+		\cf2 </\cf3 repository\cf2 >\cf0 \
+	\cf2 </\cf3 repositories\cf2 >
+\f0\fs24 \cf0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\ql\qnatural\pardirnatural
+\cf0 \
+\
+4) Build section\
+The build section (http://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html) of the pom.xml instructs Maven how to configure the execution of various build steps. In this section we are reviewing the boilerplate markup that necessary to configure Tycho.\
+\
+First, the reference to the tycho-maven-plugin, indicates that tycho is a Maven extension that hooks in Maven at a very low level\
+\
+\pard\pardeftab720\ql\qnatural
+
+\f1\fs22 \cf0         \cf2 <\cf3 groupId\cf2 >\cf0 org.sonatype.tycho\cf2 </\cf3 groupId\cf2 >\cf0 \
+        \cf2 <\cf3 artifactId\cf2 >\cf0 \ul tycho\ulnone -\ul maven\ulnone -\ul plugin\cf2 \ulnone </\cf3 artifactId\cf2 >\cf0 \
+        \cf2 <\cf3 version\cf2 >\cf0 0.11.0-SNAPSHOT\cf2 </\cf3 version\cf2 >\cf0 \
+        \cf2 <\cf3 extensions\cf2 >\cf0 true\cf2 </\cf3 extensions\cf2 >\
+\pard\pardeftab720\ql\qnatural
+
+\f0\fs24 \cf0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\ql\qnatural\pardirnatural
+\cf0 Second is the indication that the p2 resolver should be used.\
+\pard\pardeftab720\ql\qnatural
+
+\f1\fs22 \cf0 	 \cf2 <\cf3 groupId\cf2 >\cf0 org.sonatype.tycho\cf2 </\cf3 groupId\cf2 >\cf0 \
+        \cf2 <\cf3 artifactId\cf2 >\cf0 target-platform-configuration\cf2 </\cf3 artifactId\cf2 >\cf0 \
+        \cf2 <\cf3 version\cf2 >\cf0 0.11.0-SNAPSHOT\cf2 </\cf3 version\cf2 >\
+\
+5) Controlling the content of the final archive\
+The output of this build is a jar. In order to control what is added to the final add, tycho will use the value of the bin.includes property as defined in the build.properties.\
+\
+6) Executing the build\
+The execution of the build is trivial, since it only requires an installation of Maven 3 and to type in "mvn clean install" in the folder that contains the pom.xml.\
+\pard\pardeftab720\ql\qnatural
+
+\f0\fs24 \cf0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\ql\qnatural\pardirnatural
+\cf0 When the build is running a lot of information will be displayed in the console. From a high level, it will first read the manifest.mf, connect to repositories, resolve dependencies, download and cache necessary bundles from p2 repository, compile and finally create the final jar. A successful build will end with the message "BUILD SUCCESS" and a failed build with "BUILD FAILED". \
+\
+The result of the build is stored in the target folder at the root of the plugin being built (see screenshot afterBuild.png). In the case of our example a file called example1-1.0.0-SNAPSHOT.jar can be found. The target folder contains other files that have been created as part of the build. \
+}
