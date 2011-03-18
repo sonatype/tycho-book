@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+"http://www.sonatype.com/tmp/docbook/xml/4.5/docbookx.dtd">
+<chapter id="target-platform">
+	<title>Controlling the sources of the dependencies</title>
+	Tycho offers two ways to control the set of bundles / features that are
+	accessible when the dependencies are being resolved: repository and
+	target platform. This section introduces how they can both be used and
+	analyzes their pros and cons.
+
+	<section>
+		<title>
+			Repositories
+		</title>
+		<para>
+			Repositories, defined in the repository tag of the pom.xml (see figure XXX), offer
+			a
+			simple way to make available a set of bundles and features to Tycho.
+			This approach will make available all the elements contained in the
+			repository.
+		</para>
+		<programlisting language="xml">
+			&lt;repository&gt;
+			&lt;id&gt;helios&lt;/id&gt;
+			&lt;layout&gt;p2&lt;/layout&gt;
+			&lt;url&gt;http://download.eclipse.org/releases/helios&lt;/url&gt;
+			&lt;/repository&gt; </programlisting>
+		<para>The pros: Dealing with repositories is very simple since one
+			just has to add a reference to the pom.xml to have the complete
+			content of a repository be available in a build.
+		</para>
+		<para>The cons:
+			Everything available in the repository is available. This means that if the
+			content of the repository changes, then the build "changes" as well.
+			It also means that it is "harder" to control the dependencies being
+			introduced since just adding a reference from a bundle will suffice
+			to get a new bundle consumed.</para>
+	</section>
+
+	<section>
+		<title>
+			Target definition / target platform
+		</title>
+		<para>
+			Like repositories, target platforms identify a set of bundles and
+			features that are made available at build time. Target platforms are
+			captured in target definition files (.target files) and reuse the
+			format defined by PDE (Target Platform
+			http://help.eclipse.org/helios/topic/org.eclipse.pde.doc.user/concepts/target.htm).
+		</para>
+		<para>Typically a target definition file will identify one or more
+			repositories as well as a set of IUs that need to be made visible.
+			The list of IUs is not exhaustive but only needs to list some "entry
+			points" for which the transitive closure of IUs will be made
+			available. For example, to use RCP only the feature needs to be
+			listed in target platform and it will get JFace, SWT, etc.
+		</para>
+			The pros:
+			<itemizedlist>
+				<listitem>
+					Allows you to precisely control what is made available, thus making it is
+					more difficult to have undesired dependencies creep in.
+				</listitem>
+				<listitem>
+					The target definition file can be used in PDE to control the set of
+					bundles and features visible in the IDE when used to set the target
+					platform, offering a consistent experience across the command line
+					build and the IDE.
+				</listitem>
+			</itemizedlist>
+		<para>
+			Cons: The file is hard to maintain, and the target platform editor not
+			very helpful.
+			
+			TO FILL SNIPPET
+		</para>
+	</section>
+</chapter>
