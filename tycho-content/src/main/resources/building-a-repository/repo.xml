@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+"http://www.sonatype.com/tmp/docbook/xml/4.5/docbookx.dtd">
+<chapter id="building-a-repo">
+<title>Building a p2 repository</title>
+<para>
+The creation of update site (aka p2 repository) is handled by the eclipse-repository packaging type and a very minimalist pom and set of files.
+</para>
+
+<programlisting language="xml">
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+  &lt;parent&gt;
+    &lt;artifactId&gt;parent&lt;/artifactId&gt;
+    &lt;groupId&gt;tychodemo&lt;/groupId&gt;
+    &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+    &lt;relativePath&gt;../tychodemo.parent/pom.xml&lt;/relativePath&gt;
+  &lt;/parent&gt;
+  &lt;groupId&gt;tychodemo&lt;/groupId&gt;
+  &lt;artifactId&gt;tychodemo.repository&lt;/artifactId&gt;
+  &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+  &lt;packaging&gt;eclipse-repository&lt;/packaging&gt;
+
+&lt;/project&gt;
+
+</programlisting>
+<para>
+The features that need to be made available in the final repository are listed in a file called category.xml located in the same folder than pom.xml. The category.xml files serves two purposes:
+<itemizedlist>
+<listitem>
+To list the features that need to be contained into the site.
+</listitem>
+<listitem>
+To categorize the content of the repository for easier presentation to the user.
+</listitem>
+</itemizedlist>
+</para>
+
+<para>
+For example the following category file will publish the tychodemo.feature feature and will make it available under a category called "Tycho Demo Category" .
+</para>
+
+<programlisting language="xml">
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;site&gt;
+   &lt;feature url="features/tychodemo.feature_1.0.0.qualifier.jar" id="tychodemo.feature" version="1.0.0.qualifier"&gt;
+      &lt;category name="tychodemo.category"/&gt;
+   &lt;/feature&gt;
+   &lt;feature url="features/org.eclipse.rcp_0.0.0.jar" id="org.eclipse.rcp" version="0.0.0"&gt;
+      &lt;category name="tychodemo.category"/&gt;
+   &lt;/feature&gt;
+   &lt;feature url="features/tychodemo.source.feature_1.0.0.qualifier.jar" id="tychodemo.source.feature" version="1.0.0.qualifier"&gt;
+      &lt;category name="tychodemo.category"/&gt;
+   &lt;/feature&gt;
+   &lt;category-def name="tychodemo.category" label="Tycho Demo Category"&gt;
+      &lt;description&gt;
+         Tycho Demo Category
+      &lt;/description&gt;
+   &lt;/category-def&gt;
+&lt;/site&gt;
+</programlisting>
+
+<section>
+	<title>
+		Self-contained repositoroies
+	</title>
+	<para>
+		In some cases (e.g RCP applications), you want to make sure that the
+		repository you are making available is completely self-contained. That
+		means that for any plugin or feature available in the repository all
+		the other plugins and features necessary to install it are also
+		contained in the repository.
+	</para>
+	<para>
+		This is especially useful when you want to be in complete control of where
+		the final user of your update site is going to get the artifacts and
+		metadata from. For example you may not want your user to have to
+		connect to eclipse.org to download the RCP features, but only come to
+		your own site.
+	</para>
+	<para>
+		The creation of these self contained repository is supported by the
+		eclipse-repository packaging type, and it suffices to add the
+		following markup to the previous pom.xml to get the desired behaviour.
+	</para>
+	<para>
+		Though this approach is tempting to resolve dependency issues, it needs to
+		be clearly understood that the repositories created are much larger
+		than those including just your own features since it will capture
+		everything from your feature down to OSGi or SWT. These large
+		repositories have two consequences, first they are longer to download
+		for your user (since there is more content), but also in versions pre
+		eclipse 3.7 will result in a bigger memory footprint during the
+		installation.
+	</para>
+	<para>
+		If controlling the provenance of all the artifacts is not a necessity,
+		it is recommended to use repository references or composite
+		repositories
+		(http://wiki.eclipse.org/Equinox/p2/Composite_Repositories_%28new%29)
+	</para>
+</section>
+
+</chapter>
