@@ -7,8 +7,9 @@
 \f0\fs24 \cf0 Testing \
 Tycho has built-in support to execute "headless", "UI" and "SWTBot" test. All of these are supported through the "eclipse-test-plugin" packaging type.\
 \
-For Maven users, this is slightly different than what Maven typically does since in usually tests are stored in the same project than the code being tested, whereas the Eclipse convention separates the two in their own project.\
+For Maven users, this is slightly different than the typical Maven way since tests are normally stored along side with the code being tested, whereas the Eclipse convention that is followed by Tycho separates the main code from the tests in individual project.\
 \
+Which tests are executed?\
 By default Tycho will execute all the tests found in any package contained in the test plugin. \
 \
 This means that the smallest pom.xml for executing tests is the following:\
