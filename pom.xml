@@ -1,0 +1,214 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.sonatype.tychobook</groupId>
+  <artifactId>tycho-parent</artifactId>
+  <version>2.9</version>
+  <packaging>pom</packaging>
+  <name>Using Tycho</name>
+  <description>Building OSGi and Eclipse application with Maven</description>
+  <url>http://tycho.sonatype.org/book</url>
+  <organization>
+    <name>Sonatype, Inc.</name>
+    <url>http://www.sonatype.com</url>
+  </organization>
+  <properties>
+    <book.title>Using Tycho</book.title>
+    <book.subtitle>Building OSGi and Eclipse application with Maven</book.subtitle>
+    <copyright.year>2011</copyright.year>
+    <docbkx-tools.version>2.0.11</docbkx-tools.version>
+    <release.date>2011-03-21</release.date>
+    <release.month>March</release.month>
+  </properties>
+  <developers>
+    <developer>
+      <id>prapicau</id>
+      <name>Pascal Rapicault</name>
+      <email>pascal@sonatype.com</email>
+      <organization>Sonatype, Inc.</organization>
+      <organizationUrl>http://www.sonatype.com</organizationUrl>
+      <roles>
+        <role>Editor</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>jsievers</id>
+      <name>Jan Sievers</name>
+      <organization>SAP</organization>
+      <organizationUrl>http://sap.com</organizationUrl>
+      <roles>
+        <role>Author</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>ifedorenko</id>
+      <name>Igor Fedorenko</name>
+      <email>ifedorenko@sonatype.com</email>
+      <organization>Sonatype, Inc.</organization>
+      <organizationUrl>http://www.sonatype.com</organizationUrl>
+      <roles>
+        <role>Author</role>
+      </roles>
+    </developer>
+  </developers>
+  <modules>
+    <module>tycho-content</module>
+    <module>tycho-pdf</module>
+  </modules>
+  <build>
+    <plugins>
+      <plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-release-plugin</artifactId>
+        <version>2.0-beta-9</version>
+        <configuration>
+          <allowTimestampedSnapshots>true</allowTimestampedSnapshots>
+          <autoVersionSubmodules>true</autoVersionSubmodules>
+          <goals>clean compile install site-deploy</goals>
+          <releaseProfiles>publish</releaseProfiles>
+	  <preparationGoals>clean install</preparationGoals>
+          <useReleaseProfile>false</useReleaseProfile>
+        </configuration>
+	<dependencies>
+	  <dependency>
+	    <groupId>org.apache.maven.scm</groupId>
+	    <artifactId>maven-scm-provider-gitexe
+	    </artifactId>
+	    <version>1.2</version>
+	  </dependency>
+	</dependencies>
+      </plugin>
+      <plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-scm-plugin</artifactId>
+	<version>1.2</version>
+	<dependencies>
+	  <dependency>
+	    <groupId>org.apache.maven.scm</groupId>
+	    <artifactId>maven-scm-provider-gitexe
+	    </artifactId>
+	    <version>1.2</version>
+	  </dependency>
+	</dependencies>
+      </plugin>
+    </plugins>
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+         <artifactId>wagon-ssh</artifactId>
+         <version>1.0-beta-6</version>
+      </extension>
+    </extensions>
+  </build>
+  <scm>
+    <connection>scm:git:git://github.com/sonatype/tycho-book.git</connection>
+    <url>scm:git:git://github.com/sonatype/tycho-book.git</url>
+    <developerConnection>scm:git:git://github.com/sonatype/tycho-book.git</developerConnection>	
+  </scm>
+  <distributionManagement>
+    <repository>
+      <id>forge-releases</id>
+      <name>Sonatype Forge Releases</name>
+      <url>http://repository.sonatype.org/content/repositories/releases</url>
+    </repository>
+    <snapshotRepository>
+      <id>forge-snapshots</id>
+      <name>Sonatype Forge Snapshot</name>
+      <url>http://repository.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+  </distributionManagement>
+  <repositories>
+    <repository>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <id>sonatype-public</id>
+      <name>Sonatype Public</name>
+      <url>http://repository.sonatype.org/content/groups/public</url>
+    </repository>
+    <repository>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <id>sonatype-forge</id>
+      <name>Sonatype Forge</name>
+      <url>http://repository.sonatype.org/content/groups/forge</url>
+    </repository>
+    <repository>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <id>Codehaus Snapshots</id>
+      <url>http://snapshots.repository.codehaus.org</url>
+    </repository>
+    <repository>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>Central</id>
+      <url>http://repo1.maven.org/maven2</url>
+    </repository>
+    <repository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>central</id>
+      <name>Maven Repository Switchboard</name>
+      <url>http://repo1.maven.org/maven2</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <id>sonatype-public</id>
+      <name>Sonatype Public</name>
+      <url>http://repository.sonatype.org/content/groups/public</url>
+    </pluginRepository>
+    <pluginRepository>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <id>sonatype-forge</id>
+      <name>Sonatype Forge</name>
+      <url>http://repository.sonatype.org/content/groups/forge</url>
+    </pluginRepository>
+    <pluginRepository>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <id>Codehaus Snapshots</id>
+      <url>http://snapshots.repository.codehaus.org</url>
+    </pluginRepository>
+    <pluginRepository>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>Central</id>
+      <url>http://repo1.maven.org/maven2</url>
+    </pluginRepository>
+    <pluginRepository>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>central</id>
+      <name>Maven Plugin Repository</name>
+      <url>http://repo1.maven.org/maven2</url>
+    </pluginRepository>
+  </pluginRepositories>
+</project>

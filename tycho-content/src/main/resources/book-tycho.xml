@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+"http://www.sonatype.com/tmp/docbook/xml/4.5/docbookx.dtd">
+<book id="book-nexus">
+  <?dbhtml filename="index.html"?>
+
+  <title>${book.title}</title>
+
+  <bookinfo>
+    <!--<isbn>9780984243303</isbn>-->
+
+    <edition>${project.version}</edition>
+
+    <author>
+      <surname>Sonatype, Inc.</surname>
+    </author>
+
+    <author>
+      <surname>Rapicault</surname>
+
+      <firstname>Pascal</firstname>
+    </author>
+
+    <author>
+      <surname>Sievers</surname>
+
+      <firstname>Jan</firstname>
+    </author>
+
+    <author>
+      <surname>Fedorenko</surname>
+
+      <firstname>Igor</firstname>
+    </author>
+
+    <copyright>
+      <year>${copyright.year}</year>
+
+      <holder>Sonatype, Inc.</holder>
+    </copyright>
+
+    <date>${release.date}</date>
+
+    <publisher>
+      <publishername>Sonatype, Inc.</publishername>
+
+      <address><street>12501 Prosperity Drive, Suite 350</street><city>Silver Spring</city><state>MD</state><postcode>20904</postcode></address>
+    </publisher>
+
+    <abstract>
+      <para>This book describes how to build OSGi bundles and Eclipse application with Maven.</para>
+    </abstract>
+
+    <subjectset>
+      <subject>
+        <subjectterm>COM018000</subjectterm>
+      </subject>
+    </subjectset>
+  </bookinfo>
+
+  <xi:include href="copyright.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+  <xi:include href="foreword.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+<!--   <xi:include href="chapter-introduction.xml" -->
+<!--               xmlns:xi="http://www.w3.org/2001/XInclude" /> -->
+
+<!--   <xi:include href="chapter-ci.xml" xmlns:xi="http://www.w3.org/2001/XInclude" /> -->
+
+<!--   <xi:include href="chapter-installation.xml" -->
+<!--               xmlns:xi="http://www.w3.org/2001/XInclude" /> -->
+
+  <index></index>
+</book>

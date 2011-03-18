@@ -26,7 +26,7 @@ Running SWTBot tests\
 The execution of SWTBot tests requires a bit more setup.\
 \
 \
-Controlling the arguments to pass to the execution of the tests\
+Controlling the arguments passed to the execution of the tests\
         <build>\
                 <plugins>\
                         <plugin>\
@@ -44,7 +44,12 @@ Controlling the arguments to pass to the execution of the tests\
                 </plugins>\
         </build>\
 \
+Controlling the tests being executed\
+As we've seen by default Tycho executes all the tests found in the test bundle. However, this can be controlled more precisely with the help of the testSuite and the testClass configuration flags as used in figure XXX.\
+\
 Controlling additional dependencies\
+By default, when Tycho runs the tests, the only bundles that will be executed are those included in the transitive closure of the test bundle and therefore the bundles being tested. However in a number of cases, it is important to execute the tests in a wider context such as the complete application or just additional bundles. For that case Tycho provides a facility to add additional bundles using the following XML.\
+\
 \
 The maven-osgi-test-plugin used to run tests supports many additional configuration parameters, such as controlling additional dependencies, setting start level for bundles, etc. For more see <TO FILL>\
 \
