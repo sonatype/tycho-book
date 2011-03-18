@@ -18,6 +18,7 @@
     <docbkx-tools.version>2.0.11</docbkx-tools.version>
     <release.date>2011-03-21</release.date>
     <release.month>March</release.month>
+    <project.organization.name>Sonatype, Inc.</project.organization.name>
   </properties>
   <developers>
     <developer>
