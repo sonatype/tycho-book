@@ -62,9 +62,14 @@
 
   <xi:include href="foreword.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-  <xi:include href="intro/intro.xml"
-              xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="intro/intro.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
 
+  <xi:include href="building-a-bundle/building-a-bundle.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+  <xi:include href="recommended-structure/reorg.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  
+  <xi:include href="building-a-feature/feature.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  
 <!--   <xi:include href="chapter-ci.xml" xmlns:xi="http://www.w3.org/2001/XInclude" /> -->
 
 <!--   <xi:include href="chapter-installation.xml" -->

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+"http://www.sonatype.com/tmp/docbook/xml/4.5/docbookx.dtd">
+<chapter id="building-a-feature">
+<title>Building a feature</title>
+<section>
+<title>
+Building features
+</title>
+<para>
+In this section we are showing how to build features. Building a feature with Tycho is simple and requires minimal markup. The following figure shows the complete pom.xml.
+</para>
+<para>
+    The most relevant part of the pom.xml is &lt;packaging&gt;eclipse-feature&lt;/packaging&gt; which indicates that this project is a feature, and the artifactId and the version that should match the feature id and version found in the feature.xml. 
+</para>
+<para>
+    Like for plugins, the content of the feature.jar archive gets controlled by the value of the bin.include property of the build.properties file.
+</para>    
+    <programlisting language="xml">
+    &lt;?xml version="1.0" encoding="UTF-8"?&gt; 
+     &lt;project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt; 
+       &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt; 
+         &lt;parent&gt; 
+         &lt;artifactId&gt;parent&lt;/artifactId&gt; 
+         &lt;groupId&gt;tychodemo&lt;/groupId&gt; 
+         &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt; 
+         &lt;relativePath&gt;../tychodemo.parent/pom.xml&lt;/relativePath&gt; 
+       &lt;/parent&gt; 
+       
+       &lt;groupId&gt;tychodemo&lt;/groupId&gt; 
+       &lt;artifactId&gt;tychodemo.feature&lt;/artifactId&gt; 
+       &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt; 
+       
+       &lt;packaging&gt;eclipse-feature&lt;/packaging&gt; 
+      &lt;/project&gt; 
+    </programlisting>
+    <para>
+      The build will produce the jar for the feature in the target folder. However note that this archive does not include the jars from the features. 
+    </para>
+</section>
+	<section>
+		<title>Aggregator vs feature</title>
+		<para>
+			What is the difference between the aggregator and the feature? The
+			feature is an install time mechanism created by Eclipse to install a
+			set of features and plugins together. The aggregator is a build time
+			concept created by Maven to aggregate a set of things that need to be
+			built together. For example, in an aggregator it is common to find a
+			bundle, a corresponding bundle for tests, and the feature. However
+			the feature.xml itself will most likely only refer to the bundles
+			that end up being delivered to the final user of the application.
+		</para>
+	</section> 
+     
+</chapter>

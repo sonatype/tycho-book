@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+"http://www.sonatype.com/tmp/docbook/xml/4.5/docbookx.dtd">
+<chapter id="reorg">
+	<title>Toward a recommended project structure</title>
+	<para>In this section we are evolving the simplistic example provided
+		in the previous section toward a recommended structure.
+	</para>
+	<section>
+		<title>
+			Introducing the parent pom
+		</title>
+		<para>
+			Looking at the XML from the previous section, it appears obvious
+			that if we
+			had a second plugin to build, the solution would not scale
+			very well
+			since a lot of XML would have to be duplicated. This
+			duplication
+			problem gets solved using the concept of parent POM
+			(http://sonatype.com/books/maven-book/reference/pom-relationships-sect-project-inheritance.html)
+			that exists in Maven. Through inheritance Maven projects can inherit
+			values defined in parents, thus allowing several projects to share
+			the same configuration and alleviating the need for duplication.
+		</para>
+		<para>
+			The following xml snippet is the complete parent that is derived from
+			the previous example. As you can observer, the build section and the
+			repository sections are now moved there since they are common to the
+			projects being built.
+		</para>
+		<programlisting language="xml">
+		&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+  &lt;groupId&gt;tychodemo&lt;/groupId&gt;
+  &lt;artifactId&gt;parent&lt;/artifactId&gt;
+  &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+  &lt;packaging&gt;pom&lt;/packaging&gt;
+
+  &lt;properties&gt;
+    &lt;tycho-version&gt;0.11.0-SNAPSHOT&lt;/tycho-version&gt;
+  &lt;/properties&gt;
+  &lt;repositories&gt;
+    &lt;!-- configure p2 repository to resolve against --&gt;
+    &lt;repository&gt;
+      &lt;id&gt;helios&lt;/id&gt;
+      &lt;layout&gt;p2&lt;/layout&gt;
+      &lt;url&gt;http://download.eclipse.org/releases/helios&lt;/url&gt;
+            &lt;!-- file URL for faster and offline builds --&gt;
+      &lt;!-- &lt;url&gt;file:/${basedir}/../../helios&lt;/url&gt; --&gt;
+    &lt;/repository&gt;
+  &lt;/repositories&gt;
+  &lt;build&gt;
+    &lt;plugins&gt;
+      &lt;plugin&gt;
+        &lt;!-- enable tycho build extension --&gt;
+        &lt;groupId&gt;org.sonatype.tycho&lt;/groupId&gt;
+        &lt;artifactId&gt;tycho-maven-plugin&lt;/artifactId&gt;
+        &lt;version&gt;${tycho-version}&lt;/version&gt;
+        &lt;extensions&gt;true&lt;/extensions&gt;
+      &lt;/plugin&gt;
+      &lt;plugin&gt;
+        &lt;groupId&gt;org.sonatype.tycho&lt;/groupId&gt;
+        &lt;artifactId&gt;target-platform-configuration&lt;/artifactId&gt;
+        &lt;version&gt;${tycho-version}&lt;/version&gt;
+        &lt;configuration&gt;
+          &lt;!-- recommended: use p2-based target platform resolver --&gt;
+          &lt;resolver&gt;p2&lt;/resolver&gt;
+        &lt;/configuration&gt;
+      &lt;/plugin&gt;
+    &lt;/plugins&gt;
+  &lt;/build&gt;
+&lt;/project&gt;
+
+		</programlisting>
+		
+		<para>
+	The packaging type of a parent is pom, and each child will specify its own
+	packaging type.
+</para>
+	<para>
+		The version of Tycho is factored out in a variable. It is usually a good
+		practice because it makes it easy to consume a new version of Tycho
+		without having to update several places.
+		(http://maven.apache.org/guides/introduction/introduction-to-the-pom.html#Project_Interpolation)
+	</para>
+	<para>
+		The child becomes what is shown in the figure below. As we can see it is
+		much more compact than what was shown in the previous figure, and only
+		contains the information that is relevant to this project: packaging
+		type, group, artifact and version. You will also note the addition of
+		the parent section that refers to the coordinate of the parent both in
+		terms of Maven coordinate and file path.
+	</para>
+<programlisting language="xml">
+&lt;project
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+  &lt;parent&gt;
+    &lt;artifactId&gt;parent&lt;/artifactId&gt;
+    &lt;groupId&gt;tychodemo&lt;/groupId&gt;
+    &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+    &lt;relativePath&gt;../tychodemo.parent/pom.xml&lt;/relativePath&gt;
+  &lt;/parent&gt;
+  &lt;groupId&gt;tychodemo&lt;/groupId&gt;
+  &lt;artifactId&gt;tychodemo.bundle&lt;/artifactId&gt;
+  &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+  &lt;packaging&gt;eclipse-plugin&lt;/packaging&gt;
+&lt;/project&gt;
+</programlisting>		
+	</section>
+	
+	<section>
+		<title>
+			Introducing the aggregator
+		</title>
+		<para>
+			When several modules need to be built together, they are typically
+			combined into a module that is usually referred to as an
+			"aggregator". Whereas parent plays the role of inheritance, the
+			aggregator plays a role of composition regrouping under the same
+			module pieces that should be built together.
+		</para>
+		<para>
+			The following figure shows the complete aggregator. The modules section
+			lists the actual modules that will be built. It is important to note
+			that each entry refers to the folder on disk relative to the position
+			of the aggregator pom and not the artifactId.
+		</para>
+		<para>
+			Another point worth noting is that modules are not built in the order they
+			are listed. Instead, projects are built following the topological
+			sort of the dependencies of the projects being built.
+		</para>
+		
+		<programlisting language="xml">
+		&lt;project
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+  &lt;groupId&gt;tychodemo&lt;/groupId&gt;
+  &lt;artifactId&gt;aggregator&lt;/artifactId&gt;
+  &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+  &lt;packaging&gt;pom&lt;/packaging&gt;
+
+  &lt;modules&gt;
+    &lt;module&gt;tychodemo.bundle&lt;/module&gt;
+    &lt;module&gt;tychodemo.parent&lt;/module&gt;
+  &lt;/modules&gt;
+
+&lt;/project&gt;
+		</programlisting>
+		<para>
+		To summarize, we now have two folders for a total of three pom files organized as follows:
+
+TO FILL		
+		</para>
+	</section>
+</chapter>
