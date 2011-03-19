@@ -74,10 +74,10 @@
   
   <xi:include href="building-a-repository/repo.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
  
-<!--   <xi:include href="chapter-ci.xml" xmlns:xi="http://www.w3.org/2001/XInclude" /> -->
-
-<!--   <xi:include href="chapter-installation.xml" -->
-<!--               xmlns:xi="http://www.w3.org/2001/XInclude" /> -->
-
+ <xi:include href="building-a-product/productBuilds.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+ 
+ <xi:include href="testing/testing.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+ 
+  <xi:include href="misc/misc.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
   <index></index>
 </book>
