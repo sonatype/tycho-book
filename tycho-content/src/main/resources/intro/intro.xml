@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-"http://www.sonatype.com/tmp/docbook/xml/4.5/docbookx.dtd">
+<!-- <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" -->
+<!-- "http://www.sonatype.com/tmp/docbook/xml/4.5/docbookx.dtd"> -->
 <chapter id="intro">
 	<title>Introduction</title>
 
-	<section id="what-is-tycho">
-		<title>What is Tycho</title>
-
-		<para>Tycho is a set of Maven plugins dedicated to build OSGi bundles,
+		<para>Tycho is a set of Maven extensions (aka plugins) dedicated to build OSGi bundles,
 			p2 repositories, as well as other Eclipse constructs such as features
 			and RCP applications.
 			Because Tycho is part of the Maven ecosystem,
@@ -16,8 +13,6 @@
 			generators, quality analysis
 			tools, and code coverage.
 		</para>
-
-	</section>
 
 	<section>
 		<title>How old is tycho?</title>
@@ -39,7 +34,7 @@
 		</title>
 		<para>
 			Tycho is an open source project run by Sonatype. It has recently been
-			given to the Eclipse Foundation, where it will be moved to in the
+			given to the Eclipse Foundation, where it will be moved in a near
 			future. It is being promoted as the build technology of choice to
 			help with the long-term support strategy that the Eclipse Foundation
 			is putting together.
@@ -51,7 +46,7 @@
 			mailing lists are available at:
 			<email>tycho-users@lists.sonatype.com</email>
 			and
-			bugs filed at
+			bugs can be filed at
 			<ulink url="https://issues.sonatype.org/browse/TYCHO">https://issues.sonatype.org/browse/TYCHO</ulink>
 			.
 		</para>
@@ -61,13 +56,16 @@
 		<title>
 			Tycho and other technologies
 		</title>
+		<para>
+		This section positions Tycho w.r.t  other technologies in the context of which it is often mentioned.
+		</para>
 		<section>
 			<title>
 				Eclipse PDE UI / PDE Build
 			</title>
 			<para>
-				PDE, the support for plug-in and OSGi development in Eclipse is
-				composed of two parts:
+				PDE is the technology provided by the Eclipse Platform team to build bundles, and other Eclipse constructs.
+				It is composed of two parts:
 				<itemizedlist>
 					<listitem>
 						A "UI" part, referred to as PDE UI, that provides the
@@ -83,7 +81,7 @@
 						of the IDE
 					</listitem>
 				</itemizedlist>
-				Tycho, being a headless build mechanism "competes" with PDE build in
+				Tycho, being a headless build mechanism "competes" with PDE Build in
 				the sense that it provides an alternate way to build plugins and
 				other Eclipse artifacts. That being said, Tycho reuses some of the
 				files that are being used by PDE Build, such as build.properties,
@@ -99,7 +97,7 @@
 				The Maven bundle plugin is a Maven plugin
 				(http://felix.apache.org/site/apache-felix-maven-bundle-plugin-bnd.html)
 				that uses Bnd (http://www.aqute.biz/Code/Bnd) to generate an OSGi
-				manifest from an analysis of the jar classifies. This approach
+				manifest from an analysis of the jar classfiles. This approach
 				allows the user to specify its dependencies in the pom.xml rather
 				than the manifest. Because it uses the Maven way of specifying
 				dependencies in the pom.xml, this approach is often referred to as
@@ -117,9 +115,8 @@
 				p2
 			</title>
 			<para>
-				p2 is the codename of Eclipse and OSGi update mechanism.
-				Tycho
-				relates to p2 in three ways.
+				p2 is the codename of Eclipse and OSGi update mechanism. It is not a build mechanism.
+				Tycho relates to p2 in three ways.
 				<itemizedlist>
 					<listitem>Tycho produces p2 repositories as part
 						of a build.</listitem>
@@ -162,7 +159,7 @@
 			Who is using Tycho?
 		</title>
 		<para>
-			Many companies including SAP, Sonatype, and Intallio, as well as open
+			Many companies including SAP, Sonatype, ZeroTurnaround, Intallio, ... as well as open
 			source projects of all sizes and complexity use Tycho in production.
 		</para>
 	</section>

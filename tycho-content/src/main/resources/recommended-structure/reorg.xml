@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-"http://www.sonatype.com/tmp/docbook/xml/4.5/docbookx.dtd">
+<!-- <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" -->
+<!-- "http://www.sonatype.com/tmp/docbook/xml/4.5/docbookx.dtd"> -->
 <chapter id="reorg">
 	<title>Toward a recommended project structure</title>
 	<para>In this section we are evolving the simplistic example provided
-		in the previous section toward a recommended structure.
+		in the previous section toward a recommended structure for Tycho projects.
 	</para>
 	<section>
 		<title>
@@ -82,19 +82,24 @@
 	packaging type.
 </para>
 	<para>
-		The version of Tycho is factored out in a variable. It is usually a good
+		The version of Tycho is factored out in a property called tycho-version. It is usually a good
 		practice because it makes it easy to consume a new version of Tycho
-		without having to update several places.
-		(http://maven.apache.org/guides/introduction/introduction-to-the-pom.html#Project_Interpolation)
+		without having to update several places
+		Note that this practice of using properties is not only limited to Tycho and is widely used in Maven 
+		(http://maven.apache.org/guides/introduction/introduction-to-the-pom.html#Project_Interpolation).
 	</para>
 	<para>
 		The child becomes what is shown in the figure below. As we can see it is
-		much more compact than what was shown in the previous figure, and only
-		contains the information that is relevant to this project: packaging
-		type, group, artifact and version. You will also note the addition of
+		much more compact than what was shown in the previous chapter, and only
+		contains the information relevant to this project: packaging
+		type, groupId, artifactId and version. You will also note the addition of
 		the parent section that refers to the coordinate of the parent both in
-		terms of Maven coordinate and file path.
+		terms of Maven coordinate and an optional file path.  
 	</para>
+
+<para>It worth noting that not all projects built in one build have to inherit from the same parent, and also that each child
+project can define additional repositories or perform any arbitrary build steps by adding those to their pom.xml.</para>	
+
 <programlisting language="xml">
 &lt;project
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
@@ -111,7 +116,7 @@
   &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
   &lt;packaging&gt;eclipse-plugin&lt;/packaging&gt;
 &lt;/project&gt;
-</programlisting>		
+</programlisting>	
 	</section>
 	
 	<section>
@@ -122,14 +127,14 @@
 			When several modules need to be built together, they are typically
 			combined into a module that is usually referred to as an
 			"aggregator". Whereas parent plays the role of inheritance, the
-			aggregator plays a role of composition regrouping under the same
+			aggregator plays a role of composition, regrouping under the same
 			module pieces that should be built together.
 		</para>
 		<para>
 			The following figure shows the complete aggregator. The modules section
 			lists the actual modules that will be built. It is important to note
 			that each entry refers to the folder on disk relative to the position
-			of the aggregator pom and not the artifactId.
+			of the aggregator pom and not the project coordinate.
 		</para>
 		<para>
 			Another point worth noting is that modules are not built in the order they
@@ -155,9 +160,14 @@
 &lt;/project&gt;
 		</programlisting>
 		<para>
-		To summarize, we now have two folders for a total of three pom files organized as follows:
-
-TO FILL		
+		To summarize, we now have two folders for a total of three pom files organized as follows: TO FILL		
 		</para>
+		<para>
+		From there on, the addition of a bundle (or any other element) simply consists in creating a new bundle with a pom.xml (like the one show figure TOFILL) 
+		and adding it in the aggregator.</para>
+		<para>
+		Finally, in this setup the build is usually started at the aggregator level. However it is still possible to start the build from any sub-project 
+		as long as the content depended upon is already available.
+		</para> 
 	</section>
 </chapter>

@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-"http://www.sonatype.com/tmp/docbook/xml/4.5/docbookx.dtd">
+<!-- <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" -->
+<!-- "http://www.sonatype.com/tmp/docbook/xml/4.5/docbookx.dtd"> -->
 <chapter id="target-platform">
-	<title>Controlling the sources of the dependencies</title>
-	Tycho offers two ways to control the set of bundles / features that are
+	<title>Controlling dependencies</title>
+	<para>
+	This chapter discuss how bundles, features and p2 IUs are made available to the projects being build.
+	</para>
+
+	<section>
+	<title>The source of dependencies</title>
+	Tycho offers two ways to control the set of bundles, features and p2 IUs that are
 	accessible when the dependencies are being resolved: repository and
 	target platform. This section introduces how they can both be used and
 	analyzes their pros and cons.
@@ -13,7 +19,7 @@
 			Repositories
 		</title>
 		<para>
-			Repositories, defined in the repository tag of the pom.xml (see figure XXX), offer
+			Repositories, defined in the repository tag of the pom.xml (see figure XXX TO FILL), offer
 			a
 			simple way to make available a set of bundles and features to Tycho.
 			This approach will make available all the elements contained in the
@@ -39,21 +45,25 @@
 
 	<section>
 		<title>
-			Target definition / target platform
+			Target platform
 		</title>
 		<para>
-			Like repositories, target platforms identify a set of bundles and
+			A target platform identify a set of bundles and
 			features that are made available at build time. Target platforms are
 			captured in target definition files (.target files) and reuse the
 			format defined by PDE (Target Platform
 			http://help.eclipse.org/helios/topic/org.eclipse.pde.doc.user/concepts/target.htm).
+			The following figure shows a target definition that only makes available the content for the JDT feature.
 		</para>
-		<para>Typically a target definition file will identify one or more
-			repositories as well as a set of IUs that need to be made visible.
-			The list of IUs is not exhaustive but only needs to list some "entry
-			points" for which the transitive closure of IUs will be made
-			available. For example, to use RCP only the feature needs to be
-			listed in target platform and it will get JFace, SWT, etc.
+		<para>
+			As you can see the main difference is that in addition of listing
+			repositories, target definitions list a set of IUs that must be made
+			visible, thus limiting to the transitive closure of the IUs listed what
+			is available.
+		</para>
+		<para>
+		The following snippet shows how to use target definitions in replacements of the repositories.
+		TOFILL
 		</para>
 			The pros:
 			<itemizedlist>
@@ -69,10 +79,31 @@
 				</listitem>
 			</itemizedlist>
 		<para>
-			Cons: The file is hard to maintain, and the target platform editor not
-			very helpful.
-			
-			TO FILL SNIPPET
+			Cons: Despite the target platform editor provided by PDE, the target platform file 
+			can be painful to maintain, especially to update the versions being used.
 		</para>
+	</section>
+	<para>
+	It also worth mentioning that in contrast with what happens in the IDE, each project has its own
+	dependencies and could therefore be built against a different set of repositories, or target platform.  
+	</para>
+	</section>
+	<section>
+	<title>
+	Build stability
+	</title>
+	<para>
+	Whether you are using repositories or target platforms to capture your dependencies, both approaches use p2 
+	repositories. Therefore, for build stability purpose, it is important to understand the contracts under which 
+	these repositories are made available. The two key characteristics to understand are: the kind of content
+	made available - is it a final release, is it intermediary build (Nightly, Integration, Milestone, in the eclipse parlance)? - 
+	and the retention policy applied - how long will this content stay here for? -. An example of a retention policy can
+	be found at TO FILL.
+	</para>
+	<para>
+	Unfortunately, even with that understood, the builds are still at the mercy of other glitches like the site hosting the repository 
+	being down. To mitigate some of those issues, it is recommended to use a repository manager like Nexus to proxy p2 repositories,
+	or to mirror the repositories being used (TO FILL link to p2 mirror task).  
+	</para>
 	</section>
 </chapter>

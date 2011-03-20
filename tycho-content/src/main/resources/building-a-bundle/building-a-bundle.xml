@@ -1,36 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-"http://www.sonatype.com/tmp/docbook/xml/4.5/docbookx.dtd">
+<!-- <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" -->
+<!-- "http://www.sonatype.com/tmp/docbook/xml/4.5/docbookx.dtd"> -->
 <chapter id="building-a-bundle">
   <title>Building an OSGi bundle / Eclipse plug-in</title>
 
   <section>
     <title>Building an OSGi bundle / Eclipse plug-in</title>
 
-    <para>In this section we are reviewing the simplest - though not most
+    <para>In this chapter we are reviewing the simplest - though not most
     concise - way of building an OSGi bundle. The example shown in this
     section is not meant to be used as a starting point, but used solely in
     the context of an introduction to group together all the relevant bits of
-    configuration in one place. <itemizedlist>
-        <listitem>
-          Tycho produces p2 repositories as part of a build.
-        </listitem>
+    configuration in one place.</para>
 
-        <listitem>
-          Tycho downloads the dependencies of the entities being built from p2 repositories. By default, Tycho does not resolve its dependencies from the Maven repository because the Maven dependency and repository models can not accommodate the expression of OSGi dependencies like import packages.
-        </listitem>
 
-        <listitem>
-          Tycho embeds parts of p2 in order to perform the dependency resolution and a few other key operations.
-        </listitem>
-      </itemizedlist></para>
-
+		As shown in the following picture (TO FILL ref to files.png), beside
+		the source code, the example contains three relevant files:
+		<itemizedlist>
+			<listitem>
+				The OSGi Manifest.mf, which captures the dependencies of the bundle
+				being built.
+			</listitem>
+			<listitem>
+				The build.properties, which describes the set of files that will be
+				included in the final archive (bin.includes property)
+			</listitem>
+			<listitem>
+				The pom.xml, which indicates to Maven how to build this project. 
+			</listitem>
+		</itemizedlist>
+     
     <para>Given that Manifest.mf and build.properties are known from PDE
-    users, this section will mostly explain the pom.xml shown in figure (TO
-    FILL pom.xml).</para>
+    users, this section will mostly explain the pom.xml presented below.</para>
 
-    <programlisting language="xml">
-
+    <programlisting language="xml"	>
+    
 &lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
 	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
@@ -87,7 +91,7 @@
      &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
      </programlisting>
 
-    <para>groupId is a necessity to "make the Maven gods happy". In a pure
+    <para>groupId is a necessity to "make the Maven gods happy". In a non-tycho
     Maven build, the groupId is used to organize the artifacts in a namespace.
     However, in Tycho its importance is reduced since usually the
     Bundle-SymbolicName is a fully qualified name (e.g. org.eclipse.platform)
@@ -103,6 +107,8 @@
     .qualifier and that the one specified in the pom.xml end with -SNAPSHOT.
     For example 1.0.0.qualifier becomes 1.0.0-SNAPSHOT.</para>
 
+	<para>The tuple, groupId, artifactId, version is also referred to as GAV or coordinate.</para>
+	
     <para>The duplication of information between the Manifest.mf and the
     pom.xml is unfortunate however it is one that we have to live with for the
     time being. This repetition can be the cause of build failures when the
@@ -131,7 +137,7 @@ must match unqualified Maven version 0.0.1-SNAPSHOT for SNAPSHOT builds -&gt; [H
   <section>
     <title>Repositories</title>
 
-    <para>In order to satisfy the dependencies expressed in the manifest.mf
+    <para>In order to satisfy the dependencies expressed in the Manifest.mf
     and thus successfully build the bundle, Tycho needs to access p2
     repositories. The identification of these repositories is done using the
     repository markup as defined by Maven. For example, the following markup
@@ -156,25 +162,45 @@ must match unqualified Maven version 0.0.1-SNAPSHOT for SNAPSHOT builds -&gt; [H
   <title>
   The build section
   </title>
-  <para>
-  The build section (http://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html) of the pom.xml instructs Maven how to configure the execution of various build steps. In this section we are reviewing the boilerplate markup that is necessary to configure Tycho.
-  </para>
+	<para>
+		The build section
+		(http://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html)
+		of the pom.xml instructs Maven how to configure the execution of
+		various build phases. In this section we are reviewing the boilerplate
+		markup that is necessary to configure Tycho.
+	</para>
   <para>
   First, the reference to the tycho-maven-plugin, indicates that Tycho is a Maven extension that hooks in Maven at a very low level.
   </para>
   <programlisting language="xml">
-        &lt;groupId&gt;org.sonatype.tycho&lt;/groupId&gt;
-        &lt;artifactId&gt;tycho-maven-plugin&lt;/artifactId&gt;
-        &lt;version&gt;0.11.0-SNAPSHOT&lt;/version&gt;
-        &lt;extensions&gt;true&lt;/extensions&gt;
+	&lt;build&gt;
+	...
+		&lt;plugins&gt;
+		...
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.sonatype.tycho&lt;/groupId&gt;
+				&lt;artifactId&gt;tycho-maven-plugin&lt;/artifactId&gt;
+				&lt;version&gt;0.11.0-SNAPSHOT&lt;/version&gt;
+				&lt;extensions&gt;true&lt;/extensions&gt;
+			&lt;/plugin&gt;
   </programlisting>
   <para>
   Second is the indication that the p2 resolver should be used.
   </para>
   <programlisting language="xml">
-	 &lt;groupId&gt;org.sonatype.tycho&lt;/groupId&gt;
-     &lt;artifactId&gt;target-platform-configuration&lt;/artifactId&gt;
-     &lt;version&gt;0.11.0-SNAPSHOT&lt;/version&gt;
+  	&lt;build&gt;
+	...
+		&lt;plugins&gt;
+		...
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.sonatype.tycho&lt;/groupId&gt;
+				&lt;artifactId&gt;target-platform-configuration&lt;/artifactId&gt;
+				&lt;version&gt;0.11.0-SNAPSHOT&lt;/version&gt;
+				&lt;configuration&gt;
+					&lt;!-- recommended: use p2-based target platform resolver --&gt;
+					&lt;resolver&gt;p2&lt;/resolver&gt;
+				&lt;/configuration&gt;
+			&lt;/plugin&gt;
   </programlisting>
   </section>
   
@@ -188,18 +214,29 @@ The output of this build is a jar. In order to control what is added to the fina
   </section>
 
 <section>
-<title>
-Executing the build
-</title>
-<para>
-The execution of the build is trivial, since it only requires an installation of Maven 3 and to type in "mvn clean install" in the folder that contains the pom.xml.
-</para>
-<para>
-When the build is running, a lot of information will be displayed in the console. From a high level, it will first read the manifest.mf, connect to repositories, resolve dependencies, download and cache necessary bundles from p2 repository, compile and finally create the final jar. A successful build will end with the message "BUILD SUCCESS" and a failed build with "BUILD FAILED". 
-</para>
-<para>
-The result of the build is stored in the target folder at the root of the plugin being built (see screenshot afterBuild.png). In the case of our example a file called example1-1.0.0-SNAPSHOT.jar can be found. The target folder contains other files that have been created as part of the build. 
-</para>
+	<title>
+		Executing the build
+	</title>
+	<para>
+		The execution of the build is trivial, since it only requires an
+		installation of Maven 3 and to type in "mvn clean install"
+		in the folder that contains the pom.xml.
+	</para>
+	<para>
+		When the build is running, a lot of information will be displayed in the
+		console. From a high level, it will first read the manifest.mf,
+		connect to repositories, resolve dependencies, download and cache
+		necessary bundles from p2 repository, compile and finally create the
+		final jar. A successful build will end with the message "BUILD
+		SUCCESS" and a failed build with "BUILD FAILURE".
+	</para>
+	<para>
+		The result of the build is stored in the target folder at the root of the
+		plugin being built (see screenshot afterBuild.png). In the case of our
+		example a file called <filename>example1-1.0.0-SNAPSHOT.jar</filename> can be found. The
+		target folder contains other files that have been created as part of
+		the build.
+	</para>
 </section>
 
 

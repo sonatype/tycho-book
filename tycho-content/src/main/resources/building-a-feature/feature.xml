@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-"http://www.sonatype.com/tmp/docbook/xml/4.5/docbookx.dtd">
+<!-- <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" -->
+<!-- "http://www.sonatype.com/tmp/docbook/xml/4.5/docbookx.dtd"> -->
 <chapter id="building-a-feature">
 <title>Building a feature</title>
 <section>
@@ -8,10 +8,11 @@
 Building features
 </title>
 <para>
-In this section we are showing how to build features. Building a feature with Tycho is simple and requires minimal markup. The following figure shows the complete pom.xml.
+In this chapter we are showing how to build features. In addition to the files normally required by PDE (feature.xml and build.properties), tycho introduces
+a minimal pom.xml as shown below.
 </para>
 <para>
-    The most relevant part of the pom.xml is &lt;packaging&gt;eclipse-feature&lt;/packaging&gt; which indicates that this project is a feature, and the artifactId and the version that should match the feature id and version found in the feature.xml. 
+    The most relevant parts of this pom.xml are &lt;packaging&gt;eclipse-feature&lt;/packaging&gt; which indicates that this project is a feature, and the artifactId / version that should match the feature id and version found in the feature.xml. 
 </para>
 <para>
     Like for plugins, the content of the feature.jar archive gets controlled by the value of the bin.include property of the build.properties file.
@@ -35,20 +36,25 @@ In this section we are showing how to build features. Building a feature with Ty
       &lt;/project&gt; 
     </programlisting>
     <para>
-      The build will produce the jar for the feature in the target folder. However note that this archive does not include the jars from the features. 
+      The build will produce the jar for the feature in the target folder. However note that this archive does not include the plugins listed in the features.
+      The gathering of features and plugins is usually handled by the eclipse-repository presented in a following chapter.  
     </para>
 </section>
 	<section>
 		<title>Aggregator vs feature</title>
 		<para>
-			What is the difference between the aggregator and the feature? The
-			feature is an install time mechanism created by Eclipse to install a
-			set of features and plugins together. The aggregator is a build time
+			What is the difference between the aggregator and the feature? 
+			<para>
+			The feature is an install time mechanism created by Eclipse to install a
+			set of features and plugins together. 
+			The aggregator is a build time
 			concept created by Maven to aggregate a set of things that need to be
-			built together. For example, in an aggregator it is common to find a
+			built together. 
+			For example, in an aggregator it is common to find a
 			bundle, a corresponding bundle for tests, and the feature. However
 			the feature.xml itself will most likely only refer to the bundles
 			that end up being delivered to the final user of the application.
+			</para>
 		</para>
 	</section> 
      

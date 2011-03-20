@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-"http://www.sonatype.com/tmp/docbook/xml/4.5/docbookx.dtd">
+<!-- <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" -->
+<!-- "http://www.sonatype.com/tmp/docbook/xml/4.5/docbookx.dtd"> -->
 <book id="book-nexus">
   <?dbhtml filename="index.html"?>
 
@@ -69,10 +69,10 @@
   <xi:include href="recommended-structure/reorg.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
   
   <xi:include href="building-a-feature/feature.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+    
+  <xi:include href="building-a-repository/repo.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
   
   <xi:include href="target-platform/target-platform.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
-  
-  <xi:include href="building-a-repository/repo.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
  
  <xi:include href="building-a-product/productBuilds.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
  
