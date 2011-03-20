@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" -->
+<!-- "http://www.sonatype.com/tmp/docbook/xml/4.5/docbookx.dtd"> -->
+<chapter id="building-a-product">
+	<title>Building a product / RCP application</title>
+	<para>
+		In order to build an RCP application, Tycho relies the product file used
+		by PDE. The build of product is done using the
+		&lt;eclipse-repository&gt; packaging type. However in comparison to what we
+			have seen so far, building a product requires a little bit more
+			configuration since a product is usually made available as a p2
+			repository or as ready-to-run archive.
+	</para>
+	<para>
+		Also, another noticeable difference with the typical pattern
+		recommended by PDE is that the product file needs to be in a project of
+		its own rather than being in the product that defines the application.
+		This gives the following file structure: TO FILL
+	</para>
+	<para>
+		The following pom.xml shows the creation of a product archive for a
+		variety of platforms specified in the parent pom. The materialize-product reference will cause the 
+		product to be installed locally as part of the build, and the archive-products will create the 
+		final archives. 
+	</para>
+	<para>
+		The result of the build is available in the target folder.
+	</para>
+	<programlisting language="xml">
+	&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+  &lt;parent&gt;
+    &lt;artifactId&gt;parent&lt;/artifactId&gt;
+    &lt;groupId&gt;tychodemo&lt;/groupId&gt;
+    &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+    &lt;relativePath&gt;../tychodemo.parent/pom.xml&lt;/relativePath&gt;
+  &lt;/parent&gt;
+  &lt;groupId&gt;tychodemo&lt;/groupId&gt;
+  &lt;artifactId&gt;tychodemo.product&lt;/artifactId&gt;
+  &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+  &lt;packaging&gt;eclipse-repository&lt;/packaging&gt;
+  &lt;build&gt;
+    &lt;plugins&gt;
+      &lt;plugin&gt;
+        &lt;groupId&gt;org.sonatype.tycho&lt;/groupId&gt;
+        &lt;artifactId&gt;tycho-p2-director-plugin&lt;/artifactId&gt;
+        &lt;version&gt;${tycho-version}&lt;/version&gt;
+        &lt;executions&gt;
+          &lt;execution&gt;
+            &lt;!-- install the product for all configured os/ws/arch environments 
+              using p2 director --&gt;
+            &lt;id&gt;materialize-products&lt;/id&gt;
+            &lt;goals&gt;
+              &lt;goal&gt;materialize-products&lt;/goal&gt;
+            &lt;/goals&gt;
+          &lt;/execution&gt;
+          &lt;execution&gt;
+            &lt;!-- (optional) create product zips (one per os/ws/arch) --&gt;
+            &lt;id&gt;archive-products&lt;/id&gt;
+            &lt;goals&gt;
+              &lt;goal&gt;archive-products&lt;/goal&gt;
+            &lt;/goals&gt;
+          &lt;/execution&gt;
+        &lt;/executions&gt;
+      &lt;/plugin&gt;
+    &lt;/plugins&gt;
+  &lt;/build&gt;
+&lt;/project&gt;
+	</programlisting>
+	
+	<section>
+	<title>
+	Specifying the build environment
+	</title>
+	<para>
+	Given that RCP applications are platform specific (e.g. Windows, Linux, Mac), it is required to define the set of environments
+	for which the application needs to be built. This is typically done in the parent pom.xml by adding the following markup. The values 
+	for os, ws and arch are those that are supported by Eclipse (http://TO FILL)
+	</para>
+			<programlisting language="xml">
+		<![CDATA[
+	             <environments>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>macosx</os>
+							<ws>cocoa</ws>
+							<arch>x86_64</arch>
+						</environment>
+					</environments>
+							]]>
+		</programlisting>
+					
+	</section>
+
+<section>
+<title>
+Archive root folder
+</title>
+<para>
+By default the root folder used in the created archive is eclipse. In order to control this, you can add the following snippet: 
+</para>
+
+	
+	<programlisting language="xml">
+	      &lt;!-- (optional) customize the root folder name of the product zip --&gt;
+        &lt;configuration&gt;
+          &lt;products&gt;
+            &lt;product&gt;
+              &lt;id&gt;tychodemo.product&lt;/id&gt;
+              &lt;rootFolder&gt;myRCP&lt;/rootFolder&gt;
+            &lt;/product&gt;
+          &lt;/products&gt;
+        &lt;/configuration&gt;
+	
+	</programlisting>
+</section>
+
+</chapter>
